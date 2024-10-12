@@ -1,45 +1,45 @@
 <!-- Modal Overlay, only visible when isOpen is true -->
-<div *ngIf="isOpen" class="modal-overlay">
-  <!-- Modal Content -->
-  <div class="modal-content">
-    <h2>Create New Timesheet</h2>
+<div *ngIf="isOpen" class="modal-overlay" (click)="close()">
+  <!-- Modal Content, click propagation stopped to keep modal open -->
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <h2>{{ id ? 'Edit Timesheet' : 'Create New Timesheet' }}</h2>
 
     <div class="form-row">
       <label for="project">Project</label>
-      <input type="text" [(ngModel)]="project" id="project" />
+      <input type="text" [(ngModel)]="project" id="project" required />
     </div>
 
     <div class="form-row">
       <label for="task">Task</label>
-      <input type="text" [(ngModel)]="task" id="task" />
+      <input type="text" [(ngModel)]="task" id="task" required />
     </div>
 
     <div class="form-row">
       <label for="startDate">Start Date</label>
-      <input type="date" [(ngModel)]="startDate" id="startDate" />
+      <input type="date" [(ngModel)]="startDate" id="startDate" required />
     </div>
 
     <div class="form-row">
       <label for="endDate">End Date</label>
-      <input type="date" [(ngModel)]="endDate" id="endDate" />
+      <input type="date" [(ngModel)]="endDate" id="endDate" required />
     </div>
 
     <div class="form-row">
       <label for="user">Assigned To</label>
-      <select [(ngModel)]="selectedUser" id="user">
+      <select [(ngModel)]="selectedUser" id="user" required>
         <option *ngFor="let user of users" [ngValue]="user">{{ user.name }}</option>
       </select>
     </div>
 
     <div class="form-row">
       <label for="status">Status</label>
-      <select [(ngModel)]="selectedStatus" id="status">
+      <select [(ngModel)]="selectedStatus" id="status" required>
         <option *ngFor="let status of statuses" [ngValue]="status">{{ status.name }}</option>
       </select>
     </div>
 
     <div class="button-group">
-      <button (click)="saveTimesheet()">Save</button>
+      <button (click)="saveTimesheet()" [disabled]="!project || !task || !startDate || !endDate || !selectedUser || !selectedStatus">Save</button>
       <button (click)="close()">Cancel</button>
     </div>
   </div>

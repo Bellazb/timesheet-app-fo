@@ -1,10 +1,10 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TimesheetService } from '../service/timesheet.service';
-import { UserService } from '../service/user.service'; // Assuming you have a UserService
-import { StatusService } from '../service/status.service'; // Assuming you have a StatusService
-import { User, Status, Timesheet } from '../model/timesheet.model'; // Adjust the path as necessary
+import { UserService } from '../service/user.service';
+import { StatusService } from '../service/status.service';
+import { User, Status, Timesheet } from '../model/timesheet.model';
 
 @Component({
   selector: 'app-modal',
@@ -14,38 +14,60 @@ import { User, Status, Timesheet } from '../model/timesheet.model'; // Adjust th
   styleUrls: ['./modal.component.css'],
 })
 export class ModalComponent implements OnInit {
+  @Input() timesheetEntry?: Timesheet;
+
   isOpen = false;
 
-  // Fields for creating a new timesheet
+  // Fields for creating/editing a timesheet
+  id?: number; // Add the id property
   project = '';
   task = '';
   startDate = '';
   endDate = '';
-  selectedStatus!: Status;  // Store selected Status object
-  selectedUser!: User;  // Store selected User object
+  selectedStatus!: Status;
+  selectedUser!: User;
 
-  users: User[] = [];  // List of users from the API
-  statuses: Status[] = [];  // List of statuses from the API
+  users: User[] = [];
+  statuses: Status[] = [];
 
   private timesheetService = inject(TimesheetService);
   private userService = inject(UserService);
   private statusService = inject(StatusService);
 
   ngOnInit() {
-    // Load users and statuses when the component is initialized
     this.loadUsers();
     this.loadStatuses();
   }
 
-  open() {
+  open(entry?: Timesheet): void {
     this.isOpen = true;
+  
+    if (entry) {
+      // Populate form fields with existing timesheet data
+      this.id = entry.id;
+      this.project = entry.project;
+      this.task = entry.task;
+      this.startDate = entry.startDate;
+      this.endDate = entry.endDate;
+      this.selectedStatus = entry.status;
+      this.selectedUser = entry.user;
+    } else {
+      // Reset fields for creating a new timesheet entry
+      this.id = undefined;
+      this.project = '';
+      this.task = '';
+      this.startDate = '';
+      this.endDate = '';
+      this.selectedStatus = undefined!;
+      this.selectedUser = undefined!;
+    }
   }
+  
 
   close() {
     this.isOpen = false;
   }
 
-  // Fetch users from the API
   loadUsers() {
     this.userService.getUsers().subscribe({
       next: (users) => {
@@ -57,7 +79,6 @@ export class ModalComponent implements OnInit {
     });
   }
 
-  // Fetch statuses from the API
   loadStatuses() {
     this.statusService.getStatus().subscribe({
       next: (statuses) => {
@@ -70,27 +91,37 @@ export class ModalComponent implements OnInit {
   }
 
   saveTimesheet() {
-    // Ensure both id and name are provided
-    const newTask: Timesheet = {
+    const timesheet: Timesheet = {
+      id: this.id,
       project: this.project,
       task: this.task,
       startDate: this.startDate,
       endDate: this.endDate,
-      status: this.selectedStatus,  // Provide full Status object with id and name
-      user: this.selectedUser  // Provide full User object with id and name
+      status: this.selectedStatus,
+      user: this.selectedUser,
     };
-
-    console.log('New Task:', newTask);
-
-    // Call the service to create the timesheet
-    this.timesheetService.createTimesheet(newTask).subscribe({
-      next: (response) => {
-        console.log('Timesheet saved successfully:', response);
-        this.close();
-      },
-      error: (error) => {
-        console.error('Error saving timesheet:', error);
-      }
-    });
-  }
+  
+    if (timesheet.id) {
+      this.timesheetService.updateTimesheet(timesheet).subscribe({
+        next: (response) => {
+          console.log('Timesheet updated successfully:', response);
+          this.close();
+        },
+        error: (error) => {
+          console.error('Error updating timesheet:', error);
+        }
+      });
+    } else {
+      this.timesheetService.createTimesheet(timesheet).subscribe({
+        next: (response) => {
+          console.log('Timesheet created successfully:', response);
+          this.close();
+        },
+        error: (error) => {
+          console.error('Error saving timesheet:', error);
+        }
+      });
+    }
+  }  
+  
 }

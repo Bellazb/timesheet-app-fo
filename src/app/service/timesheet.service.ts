@@ -21,6 +21,12 @@ export class TimesheetService {
     return this.http.post<Timesheet>(`${this.apiUrl}/create`, timesheet);
   }
 
+  // Method to update an existing timesheet
+updateTimesheet(timesheet: Timesheet): Observable<Timesheet> {
+    return this.http.put<Timesheet>(`${this.apiUrl}/update`, timesheet);
+  }
+  
+
   // Method to delete a timesheet by ID
   deleteTimesheet(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/delete/${id}`);
