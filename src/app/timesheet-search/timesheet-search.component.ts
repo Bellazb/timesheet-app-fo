@@ -1,30 +1,44 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-// import { MatDialog } from '@angular/material/dialog';
-import { TimesheetModalComponent } from '../timesheet-modal/timesheet-modal.component';
+import { ModalComponent } from '../modal/modal.component';
+import { CommonModule } from '@angular/common';
+import { TimesheetListComponent } from '../timesheet-list/timesheet-list.component';
+import { Timesheet } from '../model/timesheet.model';
 
 @Component({
   selector: 'app-timesheet-search',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, ModalComponent, TimesheetListComponent, CommonModule],
   templateUrl: './timesheet-search.component.html',
-  styleUrl: './timesheet-search.component.css'
+  styleUrls: ['./timesheet-search.component.css']
 })
-export class TimesheetSearchComponent {
+export class TimesheetSearchComponent implements AfterViewInit {
   taskName: string = '';
 
-  // constructor( public dialog: MatDialog) {
+  @ViewChild('modal', { static: false }) modal!: ModalComponent;
+  @ViewChild('timesheetList', { static: false }) timesheetList!: TimesheetListComponent; // Use the template reference variable
 
-  // }
-
-  searchTimesheet(): void {
-
+  ngAfterViewInit(): void {
+    if (this.timesheetList) {
+      console.log('TimesheetListComponent is available:', this.timesheetList);
+    } else {
+      console.error('TimesheetListComponent is still not defined.');
+    }
+  }
+  
+  openCreateDialog(): void {
+    if (this.modal) {
+      this.modal.open();
+    } else {
+      console.error('ModalComponent is not defined.');
+    }
   }
 
-  openCreateDialog(): void {
-    // const dialogRef = this.dialog.open(TimesheetModalComponent, {
-    //   width: '400px',
-    // });
-
+  searchTimesheet(): void {
+    if (this.timesheetList) {
+      this.timesheetList.fetchTimesheetEntries();
+    } else {
+      console.error('TimesheetListComponent is not available');
+    }
   }
 }

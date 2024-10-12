@@ -1,24 +1,36 @@
-<div class="timesheet-list">
-    <table>
-        <tr>
-            <th>Project</th>
-            <th>Task</th>
-            <th>Assigned To</th>
-            <th>From</th>
-            <th>To</th>
-            <th>Status</th>
-            <th>Edit</th>
-            <th>Delete</th>
-        </tr>
-        <tr *ngFor="let entry of timesheetEntries">
-          <td>{{entry.project}}</td>
-          <td>{{entry.task}}</td>
-          <td>{{entry.assignedTo}}</td>
-          <td>{{entry.fromDate}}</td>
-          <td>{{entry.toDate}}</td>
-          <td>{{entry.status}}</td>
-          <td><button (click)="editEntry(entry)">Edit</button></td>
-          <td><button (click)="deleteEntry(entry)">Delete</button></td>
-        </tr>
+<div *ngIf="timesheetEntries.length > 0" class="timesheet-list mt-5">
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>Project</th>
+                <th>Task</th>
+                <th>Assigned To</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Status</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let entry of timesheetEntries">
+                <td>{{ entry.project }}</td>
+                <td>{{ entry.task }}</td>
+                <td>{{ entry.user.name }}</td>
+                <td>{{ entry.startDate }}</td>
+                <td>{{ entry.endDate }}</td>
+                <td>{{ entry.status.name }}</td>
+                <td>
+                    <button class="btn btn-warning btn-sm" (click)="editEntry(entry)">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                </td>
+                <td>
+                    <button class="btn btn-danger btn-sm" (click)="deleteEntry(entry)">
+                        <i class="fas fa-trash-alt"></i> Delete
+                    </button>
+                </td>
+            </tr>
+        </tbody>
     </table>
 </div>

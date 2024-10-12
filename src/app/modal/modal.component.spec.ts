@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TimesheetModalComponent } from './timesheet-modal.component';
+import { ModalComponent } from './modal.component';
 
-describe('TimesheetModalComponent', () => {
-  let component: TimesheetModalComponent;
-  let fixture: ComponentFixture<TimesheetModalComponent>;
+describe('ModalComponent', () => {
+  let component: ModalComponent;
+  let fixture: ComponentFixture<ModalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TimesheetModalComponent]
+      imports: [ModalComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(TimesheetModalComponent);
+    fixture = TestBed.createComponent(ModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

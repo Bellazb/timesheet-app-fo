@@ -1,0 +1,46 @@
+<!-- Modal Overlay, only visible when isOpen is true -->
+<div *ngIf="isOpen" class="modal-overlay">
+  <!-- Modal Content -->
+  <div class="modal-content">
+    <h2>Create New Timesheet</h2>
+
+    <div class="form-row">
+      <label for="project">Project</label>
+      <input type="text" [(ngModel)]="project" id="project" />
+    </div>
+
+    <div class="form-row">
+      <label for="task">Task</label>
+      <input type="text" [(ngModel)]="task" id="task" />
+    </div>
+
+    <div class="form-row">
+      <label for="startDate">Start Date</label>
+      <input type="date" [(ngModel)]="startDate" id="startDate" />
+    </div>
+
+    <div class="form-row">
+      <label for="endDate">End Date</label>
+      <input type="date" [(ngModel)]="endDate" id="endDate" />
+    </div>
+
+    <div class="form-row">
+      <label for="user">Assigned To</label>
+      <select [(ngModel)]="selectedUser" id="user">
+        <option *ngFor="let user of users" [ngValue]="user">{{ user.name }}</option>
+      </select>
+    </div>
+
+    <div class="form-row">
+      <label for="status">Status</label>
+      <select [(ngModel)]="selectedStatus" id="status">
+        <option *ngFor="let status of statuses" [ngValue]="status">{{ status.name }}</option>
+      </select>
+    </div>
+
+    <div class="button-group">
+      <button (click)="saveTimesheet()">Save</button>
+      <button (click)="close()">Cancel</button>
+    </div>
+  </div>
+</div>

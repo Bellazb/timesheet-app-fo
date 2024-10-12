@@ -1,6 +1,14 @@
 <div class="timesheet-search">
-<label for="task">Task:</label>
-<input type="text" id="task" [(ngModel)]="taskName" placeholder="Enter Task">
-<button (click)="searchTimesheet()">Search</button>
-<button (click)="openCreateDialog()">Create</button>
+    <div class="form-group">
+        <label for="task">Task:</label>
+        <input type="text" id="task" class="form-control" [(ngModel)]="taskName" placeholder="Enter Task">
+    </div>
+
+    <div class="timesheet-buttons mt-3">
+        <button class="btn btn-primary" (click)="searchTimesheet()">Search</button>
+        <button class="btn btn-success ml-2" (click)="openCreateDialog()">Create</button>
+    </div>
+
+    <app-modal #modal></app-modal>
+    <app-timesheet-list #timesheetList></app-timesheet-list>    
 </div>

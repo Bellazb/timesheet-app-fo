@@ -1,0 +1,8 @@
+.timesheet-search {
+    margin: 20px;
+}
+
+.timesheet-buttons {
+    display: flex;
+    justify-content: flex-start;
+}

@@ -1,0 +1,9 @@
+.table {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.btn-sm {
+    padding: 4px 8px;
+    font-size: 0.875rem;
+}
